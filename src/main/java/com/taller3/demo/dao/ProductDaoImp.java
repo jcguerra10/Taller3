@@ -1,6 +1,7 @@
 package com.taller3.demo.dao;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -87,6 +88,20 @@ public class ProductDaoImp implements Dao<Product> {
 		query.setParameter("size", productSize);
 		return query.getResultList();
 	}
+	
+	public List<?> specialQuery1(Date from, Date to) {
+		return entityManager.createQuery("SELECT p, COUNT(l) FROM Product p, Location l, Productinventory pi, Productcosthistory pch"
+				+ "WHERE p.productid = pi.product.productid AND pi.location.locationid = l.locationid AND pch.product.productid = p.productid"
+				+ "AND pch.startdate BETWEEN :from AND :to "
+				+ "AND pch.enddate BETWEEN :from AND :to "
+				+ "WHERE pi.quantity > 0 "
+				+ "GROUP BY l.locationid").setParameter("from", from).setParameter("to", to).getResultList();
+	}
 
+	public List<?> specialQuery2(Date from, Date to) {
+		return entityManager.createQuery("SELECT e FROM Product e"
+				+ "WHERE e.productcosthistories.size >= 2"
+				+ "GROUP BY d.departmentid HAVING COUNT(*)>1").getResultList();
+	}
 	
 }
