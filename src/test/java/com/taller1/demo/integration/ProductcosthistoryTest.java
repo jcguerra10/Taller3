@@ -73,8 +73,6 @@ class ProductcosthistoryTest {
 		proc.setProductid(1);
 		Productcategory pCategory = new Productcategory();
 		
-		
-		
 		Productsubcategory pSubCategory = new Productsubcategory();
 		
 		pSubCategory.setProductcategory(pCategory);

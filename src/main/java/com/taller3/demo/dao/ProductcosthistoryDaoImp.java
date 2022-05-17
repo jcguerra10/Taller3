@@ -9,12 +9,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.taller3.demo.dao.interfaces.Dao;
 import com.taller3.demo.model.prod.Product;
 import com.taller3.demo.model.prod.Productcosthistory;
 
+@Repository
+@Scope("singleton")
 public class ProductcosthistoryDaoImp implements Dao<Productcosthistory> {
 
 	@PersistenceContext
@@ -36,8 +40,9 @@ public class ProductcosthistoryDaoImp implements Dao<Productcosthistory> {
 	}
 
 	@Override
+	@Transactional
 	public void save(Productcosthistory aut) {
-		executeInsideTransaction(entityManager -> entityManager.persist(aut));
+		entityManager.persist(aut);
 	}
 
 	@Override

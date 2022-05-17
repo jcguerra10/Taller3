@@ -41,7 +41,6 @@ class ProductDaoTest {
 	static Product p3 = new Product();
 	static Product p4 = new Product();
 	static Product p5 = new Product();
-	static Product p6 = new Product();
 
 	@BeforeEach
 	void setUp() {
@@ -107,6 +106,8 @@ class ProductDaoTest {
 		p5.setProductsubcategory(pSubCategory2);
 		p5.setSize(BigDecimal.valueOf(12));
 		p5.setWeight(BigDecimal.valueOf(15));
+
+
 	}
 
 	@Test

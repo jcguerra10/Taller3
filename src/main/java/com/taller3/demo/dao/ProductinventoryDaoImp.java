@@ -12,7 +12,11 @@ import javax.persistence.Query;
 import com.taller3.demo.dao.interfaces.Dao;
 import com.taller3.demo.model.prod.Product;
 import com.taller3.demo.model.prod.Productinventory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
+@Repository
+@Scope("singleton")
 public class ProductinventoryDaoImp implements Dao<Productinventory> {
 
 	@PersistenceContext
