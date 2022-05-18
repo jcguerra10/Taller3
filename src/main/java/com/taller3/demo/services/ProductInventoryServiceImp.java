@@ -2,6 +2,8 @@ package com.taller3.demo.services;
 
 import java.util.Optional;
 
+import com.taller3.demo.dao.ProductinventoryDaoImp;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,17 +16,12 @@ import com.taller3.demo.services.interfaces.ProductInventoryService;
 @Service
 public class ProductInventoryServiceImp implements ProductInventoryService {
 
-	private ProductInventoryRepository proinRepository;
-	private LocationRepository lr;
-	
-	public ProductInventoryServiceImp(ProductInventoryRepository proinRepository, LocationRepository lr) {
-		this.proinRepository = proinRepository;
-		this.lr = lr;
-	}
+	@Autowired
+	private ProductinventoryDaoImp dao;
 
 	@Transactional
 	@Override
-	public Productinventory saveProductInventory(Productinventory proInventory) {
+	public void saveProductInventory(Productinventory proInventory) {
 		if (proInventory == null)
 			throw new NullPointerException("ObjectNull");
 		if (proInventory.getLocation() == null) 
@@ -33,13 +30,13 @@ public class ProductInventoryServiceImp implements ProductInventoryService {
 			throw new IllegalArgumentException("Quantity Null");
 		if (proInventory.getQuantity() < 0)
 			throw new IllegalArgumentException("Quantity is not Greater than 0");
-		return proinRepository.save(proInventory);
+		dao.save(proInventory);
 	}
 
 	@Transactional
 	@Override
-	public Productinventory editProductInventory(Productinventory proInventory, Integer id) {
-		Optional<Productinventory> op = proinRepository.findById(id);
+	public void editProductInventory(Productinventory proInventory, Integer id) {
+		Optional<Productinventory> op = dao.findById(id);
 		Productinventory opLoc = op.get();
 		if (proInventory == null)
 			throw new NullPointerException("No Object");
@@ -49,11 +46,10 @@ public class ProductInventoryServiceImp implements ProductInventoryService {
 			throw new IllegalArgumentException("Quantity Null");
 		if (proInventory.getQuantity() < 0)
 			throw new IllegalArgumentException("Quantity is not Greater than 0");
-		opLoc.setId(proInventory.getId());
 		opLoc.setProduct(proInventory.getProduct());
 		opLoc.setLocation(proInventory.getLocation());
 		opLoc.setQuantity(proInventory.getQuantity());
-		return proinRepository.save(opLoc);
+		dao.update(opLoc);
 	}
 
 }
