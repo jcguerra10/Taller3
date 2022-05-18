@@ -1,4 +1,4 @@
-package com.taller3.demo.dao.test;
+package com.taller3.demo.test.dao;
 
 import static org.junit.jupiter.api.Assertions.*;
 

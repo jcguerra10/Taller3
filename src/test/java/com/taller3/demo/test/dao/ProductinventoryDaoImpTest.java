@@ -1,4 +1,4 @@
-package com.taller3.demo.dao.test;
+package com.taller3.demo.test.dao;
 
 import com.taller3.demo.dao.*;
 import com.taller3.demo.model.prod.*;

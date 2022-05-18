@@ -2,6 +2,8 @@ package com.taller3.demo.services;
 
 import java.util.Optional;
 
+import com.taller3.demo.dao.LocationDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,15 +14,12 @@ import com.taller3.demo.services.interfaces.LocationService;
 @Service
 public class LocationServiceImp implements LocationService {
 
-	private LocationRepository locationRepository;
-	
-	public LocationServiceImp(LocationRepository locationRepository) {
-		this.locationRepository = locationRepository;
-	}
+	@Autowired
+	private LocationDao dao;
 	
 	@Transactional
 	@Override
-	public Location saveLocation(Location loc) {
+	public void saveLocation(Location loc) {
 		if (loc == null )
 			throw new NullPointerException("Parameter Null");
 		if (loc.getName() == null)
@@ -35,13 +34,13 @@ public class LocationServiceImp implements LocationService {
 			throw new IllegalArgumentException("CostRate Null");
 		if (loc.getCostrate().intValue() < 0 || loc.getCostrate().intValue() > 1)
 			throw new IllegalArgumentException();
-		return locationRepository.save(loc);
+		dao.save(loc);
 	}
 
 	@Transactional
 	@Override
-	public Location editLocation(Location loc, Integer locId) {
-		Optional<Location> op = locationRepository.findById(locId);
+	public void editLocation(Location loc, Integer locId) {
+		Optional<Location> op = dao.findById(locId);
 		Location opLoc = op.get();
 		if (loc == null )
 			throw new NullPointerException("Parameter Null");
@@ -60,7 +59,7 @@ public class LocationServiceImp implements LocationService {
 		opLoc.setName(loc.getName());
 		opLoc.setAvailability(loc.getAvailability());
 		opLoc.setCostrate(loc.getCostrate());
-		return locationRepository.save(opLoc);
+		dao.update(opLoc);
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.taller3.demo.dao.test;
+package com.taller3.demo.test.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -30,7 +30,6 @@ public class LocationDaoTest {
 	Location l3 = new Location();
 	Location l4 = new Location();
 	Location l5 = new Location();
-	Location l6 = new Location();
 	
 	@BeforeEach
 	void setup() {
@@ -38,22 +37,21 @@ public class LocationDaoTest {
 		l1.setAvailability(new BigDecimal(2));
 		l1.setCostrate(new BigDecimal(1));
 		
-		l1.setName("Locat 2");
-		l1.setAvailability(new BigDecimal(1));
-		l1.setCostrate(new BigDecimal(1));
+		l2.setName("Locat 2");
+		l2.setAvailability(new BigDecimal(1));
+		l2.setCostrate(new BigDecimal(1));
 		
-		l1.setName("Locat 3");
-		l1.setAvailability(new BigDecimal(8));
-		l1.setCostrate(new BigDecimal(1));
+		l3.setName("Locat 3");
+		l3.setAvailability(new BigDecimal(8));
+		l3.setCostrate(new BigDecimal(1));
 		
-		l1.setName("Locat 4");
-		l1.setAvailability(new BigDecimal(2));
-		l1.setCostrate(new BigDecimal(1));
+		l4.setName("Locat 4");
+		l4.setAvailability(new BigDecimal(2));
+		l4.setCostrate(new BigDecimal(1));
 		
-		l1.setName("Locat 5");
-		l1.setAvailability(new BigDecimal(2));
-		l1.setCostrate(new BigDecimal(1));
-		
+		l5.setName("Locat 5");
+		l5.setAvailability(new BigDecimal(2));
+		l5.setCostrate(new BigDecimal(1));
 	}
 	
 	@Test

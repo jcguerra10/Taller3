@@ -2,6 +2,8 @@ package com.taller3.demo.services;
 
 import java.util.Optional;
 
+import com.taller3.demo.dao.ProductDaoImp;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,16 +13,13 @@ import com.taller3.demo.services.interfaces.ProductService;
 
 @Service
 public class ProductServiceImp implements ProductService {
-	
-	public ProductRepository productRepository;
-	
-	public ProductServiceImp(ProductRepository productRepository) {
-		this.productRepository = productRepository;
-	}
-	
+
+	@Autowired
+	public ProductDaoImp dao;
+
 	@Transactional
 	@Override
-	public Product saveProduct(Product pro) {
+	public void saveProduct(Product pro) {
 		if(pro == null)
 			throw new NullPointerException();
 		
@@ -56,13 +55,13 @@ public class ProductServiceImp implements ProductService {
 		if(pro.getWeight().doubleValue() <= 0)
 			throw new IllegalArgumentException("Weight is not Greater than 0");
 		
-		return productRepository.save(pro);		
+		dao.save(pro);
 	}
 
 	@Transactional
 	@Override
-	public Product editProduct(Product pro, Integer id) {
-		Optional<Product> opPro = productRepository.findById(id);
+	public void editProduct(Product pro, Integer id) {
+		Optional<Product> opPro = dao.findById(id);
 		Product editPro = opPro.get();
 		if(pro == null)
 			throw new NullPointerException();
@@ -94,7 +93,7 @@ public class ProductServiceImp implements ProductService {
 		editPro.setSellenddate(pro.getSellenddate());
 		editPro.setSize(pro.getSize());
 		editPro.setWeight(pro.getWeight());
-		return productRepository.save(editPro);
+		dao.update(editPro);
 	}
 
 }
