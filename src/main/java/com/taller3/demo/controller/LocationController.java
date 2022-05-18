@@ -1,34 +1,28 @@
 package com.taller3.demo.controller;
 
-import java.util.Optional;
-
-import javax.validation.Valid;
-
+import com.taller3.demo.dao.LocationDao;
+import com.taller3.demo.model.prod.Location;
+import com.taller3.demo.services.LocationServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import com.taller3.demo.model.prod.Location;
-import com.taller3.demo.repositories.LocationRepository;
-import com.taller3.demo.services.LocationServiceImp;
+import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class LocationController {
 
 	@Autowired
-	private LocationRepository locationRepository;
+	private LocationDao daoLocation;
 	@Autowired
 	private LocationServiceImp locationServiceImp;
 
 	@GetMapping("/locations/")
 	public String locationScreen(Model model) {
-		model.addAttribute("locations", locationRepository.findAll());
+		model.addAttribute("locations", daoLocation.getAll());
 
 		return "/locations/index";
 	}
@@ -58,7 +52,7 @@ public class LocationController {
 	
 	@GetMapping("/locations/edit/{id}")
 	public String editLocationScreen(@PathVariable("id") Integer id, Model model) {
-		Optional<Location> findEmployee = locationRepository.findById(id);
+		Optional<Location> findEmployee = daoLocation.findById(id);
 		if (findEmployee.isEmpty())
 			throw new IllegalArgumentException("Invalid employee Id:" + id);
 		model.addAttribute("location", findEmployee.get());
@@ -73,7 +67,7 @@ public class LocationController {
 		if (!action.equals("Cancel")) {
 			if (!bindingResult.hasErrors()) {			
 				locationServiceImp.editLocation(location, id);
-				model.addAttribute("locations", locationRepository.findAll());
+				model.addAttribute("locations", daoLocation.getAll());
 			} else {
 				model.addAttribute("location", location);
 				dir = "locations/edit";

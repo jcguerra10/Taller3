@@ -1,55 +1,45 @@
 package com.taller3.demo.controller;
 
-import java.sql.Timestamp;
-
-import javax.validation.Valid;
-
+import com.taller3.demo.dao.LocationDao;
+import com.taller3.demo.dao.ProductDaoImp;
+import com.taller3.demo.dao.ProductinventoryDaoImp;
+import com.taller3.demo.model.prod.Productinventory;
+import com.taller3.demo.services.LocationServiceImp;
+import com.taller3.demo.services.ProductInventoryServiceImp;
+import com.taller3.demo.services.ProductServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import com.taller3.demo.model.prod.ProductcosthistoryPK;
-import com.taller3.demo.model.prod.Productinventory;
-import com.taller3.demo.model.prod.ProductinventoryPK;
-import com.taller3.demo.model.prod.UserApp;
-import com.taller3.demo.repositories.LocationRepository;
-import com.taller3.demo.repositories.ProductInventoryRepository;
-import com.taller3.demo.repositories.ProductRepository;
-import com.taller3.demo.services.LocationServiceImp;
-import com.taller3.demo.services.ProductInventoryServiceImp;
-import com.taller3.demo.services.ProductServiceImp;
+import javax.validation.Valid;
 
 @Controller
 public class InventoryController {
 
 	@Autowired
-	private ProductInventoryRepository productInventoryRepository;
+	private ProductinventoryDaoImp daoProductInventory;
 	@Autowired
 	private ProductInventoryServiceImp productInventoryServiceImp;
 
 	@Autowired
-	private LocationRepository locationRepository;
+	private LocationDao daoLocation;
 	@Autowired
 	private LocationServiceImp locationServiceImp;
 
 	@Autowired
-	private ProductRepository productRepository;
+	private ProductDaoImp daoProduct;
 	@Autowired
 	private ProductServiceImp productServiceImp;
 
 	@GetMapping("/inventoryproduct/")
 	public String products(Model model) {
-		model.addAttribute("productsinventory", productInventoryRepository.findAll());
+		model.addAttribute("productsinventory", daoProductInventory.getAll());
 		
 		
 		
-		productInventoryRepository.findAll().forEach(pi ->
+		daoProductInventory.getAll().forEach(pi ->
 		
 		System.out.println("---" +pi.getLocation() == null)
 				);
@@ -59,8 +49,8 @@ public class InventoryController {
 	@GetMapping("/inventoryproduct/add/")
 	public String addInventoryScreen(Model model) {
 		model.addAttribute("productinventory", new Productinventory());
-		model.addAttribute("products", productRepository.findAll());
-		model.addAttribute("locations", locationRepository.findAll());
+		model.addAttribute("products", daoProduct.getAll());
+		model.addAttribute("locations", daoLocation.getAll());
 		return "/inventoryproduct/add";
 	}
 
@@ -84,11 +74,11 @@ public class InventoryController {
 	public String editInventoryScreen(@Valid @ModelAttribute Productinventory productInventory,
 			BindingResult bindingresult, @PathVariable("id") Integer id, Model model) {
 
-		Productinventory pInventory = productInventoryRepository.findById(id).get();
+		Productinventory pInventory = daoProductInventory.findById(id).get();
 
 		model.addAttribute("inventoryproduct", pInventory);
-		model.addAttribute("products", productRepository.findAll());
-		model.addAttribute("locations", locationRepository.findAll());
+		model.addAttribute("products", daoProduct.getAll());
+		model.addAttribute("locations", daoLocation.getAll());
 		return "/inventoryproduct/edit";
 	}
 

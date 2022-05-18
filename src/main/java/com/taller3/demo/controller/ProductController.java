@@ -1,52 +1,46 @@
 package com.taller3.demo.controller;
 
-import java.sql.Timestamp;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import com.taller3.demo.dao.ProductDaoImp;
+import com.taller3.demo.dao.ProductcategoryDao;
+import com.taller3.demo.dao.ProductsubcategoryDao;
 import com.taller3.demo.model.prod.Product;
 import com.taller3.demo.model.prod.Productcategory;
 import com.taller3.demo.model.prod.Productsubcategory;
 import com.taller3.demo.model.prod.UserApp;
-import com.taller3.demo.repositories.ProductRepository;
-import com.taller3.demo.repositories.ProductcategoryRepository;
-import com.taller3.demo.repositories.ProductsubcategoryRepository;
 import com.taller3.demo.services.ProductServiceImp;
 import com.taller3.demo.services.ProductcategoryServiceImp;
 import com.taller3.demo.services.ProductsubcategoryImp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.util.Optional;
 
 @Controller
 public class ProductController {
 
 	@Autowired
-	ProductRepository productRepository;
+	ProductDaoImp daoProduct;
 	@Autowired
 	ProductServiceImp productServiceImp;
 
 	@Autowired
-	ProductcategoryRepository productcategoryRepository;
+	ProductcategoryDao daoProductcategory;
 	@Autowired
 	ProductcategoryServiceImp productcategoryServiceImp;
 
 	@Autowired
-	ProductsubcategoryRepository productsubcategoryRepository;
+	ProductsubcategoryDao daoProductsubcategory;
 	@Autowired
 	ProductsubcategoryImp productsubcategoryImp;
 
 	@GetMapping("/products/")
 	public String showProducts(Model model, UserApp ua) {
-		model.addAttribute("products", productRepository.findAll());
+		model.addAttribute("products", daoProduct.getAll());
 
 		return "/products/index";
 	}
@@ -54,7 +48,7 @@ public class ProductController {
 	@GetMapping("/products/add/")
 	public String productAddScreen(Model model) {
 		model.addAttribute(new Product());
-		model.addAttribute("subcategories", productsubcategoryRepository.findAll());
+		model.addAttribute("subcategories", daoProductsubcategory.getAll());
 		return "/products/add";
 	}
 
@@ -119,7 +113,7 @@ public class ProductController {
 
 	@GetMapping("/products/edit/{id}")
 	public String editProductScreen(@PathVariable("id") Integer id, Model model) {
-		Optional<Product> find = productRepository.findById(id);
+		Optional<Product> find = daoProduct.findById(id);
 		if (find.isEmpty())
 			throw new IllegalArgumentException("Invalid Id:" + id);
 		model.addAttribute("product", find.get());
@@ -136,7 +130,7 @@ public class ProductController {
 			if (!bindingResult.hasErrors()) {
 
 				productServiceImp.editProduct(product, id);
-				model.addAttribute("products", productRepository.findAll());
+				model.addAttribute("products", daoProduct.getAll());
 			} else {
 				model.addAttribute("product", product);
 				dir = "products/edit";
