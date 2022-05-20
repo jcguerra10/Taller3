@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.taller3.demo.model.prod.Product;
-import com.taller3.demo.repositories.ProductRepository;
 import com.taller3.demo.services.interfaces.ProductService;
 
 @Service

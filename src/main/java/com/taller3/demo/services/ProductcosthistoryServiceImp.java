@@ -1,6 +1,5 @@
 package com.taller3.demo.services;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -10,8 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.taller3.demo.model.prod.Productcosthistory;
-import com.taller3.demo.model.prod.ProductcosthistoryPK;
-import com.taller3.demo.repositories.ProductcosthistoryRepository;
 import com.taller3.demo.services.interfaces.ProductcosthistoryService;
 
 @Service

@@ -1,9 +1,9 @@
 package com.taller3.demo;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
 
+import com.taller3.demo.dao.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -16,17 +16,10 @@ import com.taller3.demo.model.prod.Productcosthistory;
 import com.taller3.demo.model.prod.Productsubcategory;
 import com.taller3.demo.model.prod.UserApp;
 import com.taller3.demo.model.prod.UserType;
-import com.taller3.demo.repositories.LocationRepository;
-import com.taller3.demo.repositories.ProductRepository;
-import com.taller3.demo.repositories.ProductcategoryRepository;
-import com.taller3.demo.repositories.ProductcosthistoryRepository;
-import com.taller3.demo.repositories.ProductsubcategoryRepository;
 import com.taller3.demo.services.UserServiceImp;
 
 @SpringBootApplication
-@ComponentScan("com.taller3.demo")
 public class Taller3Application {
-
 	public static void main(String[] args) {
 		ConfigurableApplicationContext s = SpringApplication.run(Taller3Application.class, args);
 		
@@ -49,11 +42,11 @@ public class Taller3Application {
 		usi.save(uaAdmin);
 		usi.save(uaOper);
 		
-		ProductRepository pr = s.getBean(ProductRepository.class);
-		ProductcategoryRepository pcr = s.getBean(ProductcategoryRepository.class);
-		ProductsubcategoryRepository pscr = s.getBean(ProductsubcategoryRepository.class);
-		LocationRepository lr = s.getBean(LocationRepository.class);
-		
+		ProductDaoImp pr = s.getBean(ProductDaoImp.class);
+		ProductcategoryDao pcr = s.getBean(ProductcategoryDao.class);
+		ProductsubcategoryDao pscr = s.getBean(ProductsubcategoryDao.class);
+		LocationDao lr = s.getBean(LocationDao.class);
+
 		Productcategory pCategory = new Productcategory();
 		pCategory.setName("Tech");
 		
@@ -84,7 +77,7 @@ public class Taller3Application {
 		
 		lr.save(l);
 		
-		ProductcosthistoryRepository pchr = s.getBean(ProductcosthistoryRepository.class);
+		ProductcosthistoryDaoImp pchr = s.getBean(ProductcosthistoryDaoImp.class);
 		
 		Productcosthistory pch = new Productcosthistory();
 		

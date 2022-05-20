@@ -2,38 +2,34 @@ package com.taller3.demo.services;
 
 import java.util.Optional;
 
+import com.taller3.demo.dao.ProductsubcategoryDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.taller3.demo.model.prod.Productsubcategory;
-import com.taller3.demo.repositories.ProductsubcategoryRepository;
 import com.taller3.demo.services.interfaces.ProductsubcategoryService;
 
 @Service
 public class ProductsubcategoryImp implements ProductsubcategoryService {
-
-private ProductsubcategoryRepository psRepository;
-	
-	public ProductsubcategoryImp(ProductsubcategoryRepository psRepository) {
-		this.psRepository = psRepository;
-	}
-
+@Autowired
+private ProductsubcategoryDao dao;
 	@Transactional
 	@Override
-	public Productsubcategory saveProductsubcategory(Productsubcategory pc) {
+	public void saveProductsubcategory(Productsubcategory pc) {
 		if(pc == null)
 			throw new NullPointerException("Null Object");
-		return psRepository.save(pc);
+		dao.save(pc);
 	}
 
 	@Transactional
 	@Override
-	public Productsubcategory editProductsubcategory(Productsubcategory pc, Integer i) {
-		Optional<Productsubcategory> op = psRepository.findById(i);
+	public void editProductsubcategory(Productsubcategory pc, Integer i) {
+		Optional<Productsubcategory> op = dao.findById(i);
 		Productsubcategory opLoc = op.get();
 		if(pc == null)
 			throw new NullPointerException("Null Object");
 		opLoc.setName(pc.getName());
-		return psRepository.save(opLoc);
+		dao.update(opLoc);
 	}
 }

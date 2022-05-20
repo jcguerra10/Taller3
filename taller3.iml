@@ -18,6 +18,7 @@
         <datasource-mapping>
           <factory-entry name="entityManagerFactory" />
           <factory-entry name="taller1" />
+          <factory-entry name="taller3" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>
